@@ -1,0 +1,126 @@
+	DOCKER
+INSTALLING DOCKER
+  ===doc.docker.com
+=====get docker
+=====select system type and OS
+
+NOTE: cat /etc/*release* 
+`	this will state the version of ubuntu your on.
+
+---------------------------------------------------------------------------------------------
+
+			BASIC DOCKER COMMAND
+=== RUN -START A CONTAINER
+	docker run nginx
+
+=== PS -LIST ALL RUNING CONTAINER
+	docker ps 
+=== PS -PS -A VIEWING ALL RUNING
+	docker ps -a nginx
+=== STOP -STOPS CONTAINER FROM RUNING
+	docker stop ubuntu
+=== RM -REM0VE CONTAINER PERMANTLY
+	docker rm ubuntu
+=== IMAGES -LIST IMAGES
+	docker images
+=== RMI -REMOVE IMAGES
+	docker rmi ubuntu
+	NOTE: before you remove an image, ensure that you have stop the image
+=== PULL -DOWNLOAD AN IMAGE
+	docker pull ubuntu
+
+-----------------------------------------------------------------------------------------------
+
+SOME APPENDING COMMAND
+===SLEEP 20
+	docker run ubuntu sleep 20
+NOTE: this will run ubuntu and make it sleep for 20mins
+
+=== EXEC -EXECULTE A COMMAND
+	docker exec distracted_mcclintock cat  /etc/hosts
+NOTE: this will excult a ommand insaid a container
+
+=== RUN -ATTACH AND DETACH
+	docker run -d ubuntu
+NOTE: ths will run ubuntu at the detach mode (ie running on the background)
+
+=== RUN ATTACH CONTAINERID
+	docker attach containerID
+NOTE: you need to do docker ps, then copy the container id then run docker attach id you contrl+C to exit.
+
+=== RUN -TAG 
+	docker run radis:4.0
+NOTE: adding :4.0 to radis which is tagging show that it a specific command to run version 4.0 of radis
+
+=== RUN -STDIN 
+	docker run kodekloud/simple-promt-docker
+this will run a simple "hello and welcome"
+	docker run -i kodekloud/simple-promt-docker
+NOTE: -i will open a promot for you to enter a word you which to output
+	docker run -it kodekloud/simple-promt-docker
+	welcome! please enter your name: Godwin
+output: Hello and welcome Godwin!
+NOTE: what happen here is that -it will allow to specify how you want your promot to be and to ask you to enter your name input which its going to out put for you.
+
+===RUN -PORT MAPPING
+	docker run -p 80:5000 kodekloud/webapp
+NOTE: 80 is container port and 5000 is docker port
+
+=== RUN -VOLUME MAPPING
+	docker run -v /opt/datadir:/var/lib/mysql
+NOTE: this is mostly use when you try to back up an image befor removing it.
+ist you creat folder datadir which inside opt/. the mysql images is stored on var/lib/mysql using docker run -v /opt/datadir:/var/lib/mysql
+this will copy the file into the datadir so when you remove the image you can still have it at save at datadir.
+
+=== INSPECT CONTAINER
+	docker inspect ubuntu
+NOTE: PS list the content of container, INSPECT will show you list of all the corn content of the container such as id, state, mount. stage, networksetting etc
+
+=== CONTAINER LOGS
+	docker logs blissful_hopper
+NOTE: some container runs in detach mood you can view there log by runig this command above .
+-------------------------------------------------------------------------------------------------------------------------
+
+SOME ADVANCE COMMAND
+	APPENDING COMMAND
+		docker run ubuntu cat /etc/*release*
+NOTE: this command will list the verision of ubuntu that you have in your system	
+---------------------------------------------------------------------------------------------------------------------------
+
+		RUNNING JENKINS EXTERNALLY AND INTERNALLY
+1. docker run jenkins
+	to find jenkins container id
+2. docker ps 
+	copy the jenkins container id
+3.docker inspect containerid
+	under network, bridge ipaddress copy the ip 172.17.0.2
+4. on your brower 172.17.0.2:8080
+	this will run jenkins  will start external 
+
+TO RUN JENKINS INTERNALLY 
+
+1. docker ps
+2. docker run -p 8080:8080 jenkins
+NOTE: YOUR DOCKER IP 192.18.1.14
+3. on your brower run 192.18.14:8080
+this will open jenkins
+
+CREATING A FOLDER TO SAVE YOUR JENKIS FILE TO AVOID LOSSING THEM WHEN ITS BEEN DISTORY
+
+1. creat a folder 
+	mkdir my_jenkins-data
+2.run port and map volume on jenkins
+	docker run -p 8080:8080 -v /root/my_jenkins-data:/var/jenkins_home -u root jenkins
+3. once this is done, create a job on jenkins and distory it
+
+4.docker run -p 8080:8080 -v /root/my_jenkins-data:/var/jenkins_home -u root jenkins
+
+5. refrease your brower and this will take you to login into jenkins instead of leading you to start at the beginng again.
+  
+
+
+
+
+
+
+

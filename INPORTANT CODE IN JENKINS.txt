@@ -1,0 +1,1149 @@
+INPORTANT CODE IN JENKINS
+
+  ***INSTALL IN JENKINS IN CENTOS***
+Now let us install Jenkins on the centos-host machine and configure it to run on port 8090 instead of the default port 8080.
+You can refer to the Jenkins Installation Docs located above the terminal.
+
+=== To install jenkins run the following command
+sudo yum install epel-release -y
+sudo yum install java-11-openjdk -y
+sudo wget -O /etc/yum.repos.d/jenkins.repo https://pkg.jenkins.io/redhat-stable/jenkins.repo --no-check-certificate
+sudo rpm --import http://pkg.jenkins.io/redhat-stable/jenkins.io-2023.key
+sudo yum install jenkins -y
+
+Edit /lib/systemd/system/jenkins.service file and change Jenkins port to 8090 by updating Environment="JENKINS_PORT=" variable value.
+
+sudo vi /lib/systemd/system/jenkins.service
+
+It should look like this:
+Environment="JENKINS_PORT=8090"
+
+===to start jenkins
+sudo systemctl start jenkins
+
+  ***LINKING JENKINS CLI WITH YOUR TERMINAL SSH PUBLIC KEY***
+===Log in your jenkins-cli.
+===click on user name
+===click on configure
+===ssh keygen
+===go to your terminal cat /home/godwin/ssh/id_rsa.pub
+===copy the key 
+===add your ssh public key
+
+=== TO INSTALL JANKINS-CLI.JAR(this will enable to work with jenkins on your terminal)
+wget http://localhost:8080/jnlpJars/jenkins-cli.jar
+
+ java -jar jenkins-cli.jar -s http://localhost:8080/ -auth godwin:11222f2c304a5d3accca946a69a0464545
+
+adding up -auth your name and token will enable to gain assess.
+
+=== TO START WORKING JEKINS IN YOUR TERMINAL ADD -WEBSOCKET THEN AGURUMENT EG...
+
+java -jar jenkins-cli.jar -s http://localhost:8080/ -auth godwin:11222f2c304a5d3accca946a69a0464545 -webSocket list-jobs
+
+*To configure SSH service in Jenkins to listen on a fixed port. To find out the port in use, run the command below:
+	curl -Lv http://localhost:8085/login 2>&1 | grep -i 'x-ssh-endpoint'
+
+*To interact with a user in jenkins: let us begin interacting with Jenkins over ssh with the user mike.
+	mike@jenkins-server:~$ ssh -i /home/mike/.ssh/jenkins_key -l mike -p 8022 jenkins-server help
+		
+		Keep a note of the options used with the SSH command:
+
+		-i flag is used to point to mike's private SSH key. Remember, we have already added the public key in the 		Jenkins configuration.
+		-l is the login user which in our example is mike
+		-p is the port which we found out in the previous step to be 		 8022
+
+	
+ssh -i /home/mike/.ssh/jenkins_key -l mike -p 8022 jenkins-server help
+
+THE CODE ABOVE WILL LIST ALL THE COMMAND USE TO COMMUNICATE WITH JENKINS CLI ONCE USER HAVE BEEN LINKED
+
+	THIS LIST INCLUDES
+to the list of known hosts.
+  add-job-to-view
+    Adds jobs to view.
+  build
+    Builds a job, and optionally waits until its completion.
+  cancel-quiet-down
+    Cancel the effect of the "quiet-down" command.
+  clear-queue
+    Clears the build queue.
+  connect-node
+    Reconnect to a node(s)
+  console
+    Retrieves console output of a build.
+  copy-job
+    Copies a job.
+  create-job
+    Creates a new job by reading stdin as a configuration XML file.
+  create-node
+    Creates a new node by reading stdin as a XML configuration.
+  create-view
+    Creates a new view by reading stdin as a XML configuration.
+  delete-builds
+    Deletes build record(s).
+  delete-job
+    Deletes job(s).
+  delete-node
+    Deletes node(s)
+  delete-view
+    Deletes view(s).
+  disable-job
+    Disables a job.
+  disable-plugin
+    Disable one or more installed plugins.
+  disconnect-node
+    Disconnects from a node.
+  enable-job
+    Enables a job.
+  enable-plugin
+    Enables one or more installed plugins transitively.
+  get-job
+    Dumps the job definition XML to stdout.
+  get-node
+    Dumps the node definition XML to stdout.
+  get-view
+    Dumps the view definition XML to stdout.
+  groovy
+    Executes the specified Groovy script. 
+  groovysh
+    Runs an interactive groovy shell.
+  help
+    Lists all the available commands or a detailed description of single command.
+  install-plugin
+    Installs a plugin either from a file, an URL, or from update center. 
+  keep-build
+    Mark the build to keep the build forever.
+  list-changes
+    Dumps the changelog for the specified build(s).
+  list-jobs
+    Lists all jobs in a specific view or item group.
+  list-plugins
+    Outputs a list of installed plugins.
+  offline-node
+    Stop using a node for performing builds temporarily, until the next "online-node" command.
+  online-node
+    Resume using a node for performing builds, to cancel out the earlier "offline-node" command.
+  quiet-down
+    Quiet down Jenkins, in preparation for a restart. Don’t start any builds.
+  reload-configuration
+    Discard all the loaded data in memory and reload everything from file system. Useful when you modified config files directly on disk.
+  reload-job
+    Reload job(s)
+  remove-job-from-view
+    Removes jobs from view.
+  restart
+    Restart Jenkins.
+  safe-restart
+    Safely restart Jenkins.
+  safe-shutdown
+    Puts Jenkins into the quiet mode, wait for existing builds to be completed, and then shut down Jenkins.
+  session-id
+    Outputs the session ID, which changes every time Jenkins restarts.
+  set-build-description
+    Sets the description of a build.
+  set-build-display-name
+    Sets the displayName of a build.
+  shutdown
+    Immediately shuts down Jenkins server.
+  stop-builds
+    Stop all running builds for job(s)
+  update-job
+    Updates the job definition XML from stdin. The opposite of the get-job command.
+  update-node
+    Updates the node definition XML from stdin. The opposite of the get-node command.
+  update-view
+    Updates the view definition XML from stdin. The opposite of the get-view command.
+  version
+    Outputs the current version.
+  wait-node-offline
+    Wait for a node to become offline.
+  wait-node-online
+    Wait for a node to become online.
+  who-am-i
+     Reports your credential and permissions.	
+
+
+***JENKINS PLUGINS AND INSTALLATION***
+
+Plugins are the primary means of enhancing the functionality of a Jenkins environment to suit organization or user specific needs.
+
+   In jenkins, plugins are already embeded on it. 
+To install this...
+ -click on manage jenkins
+   -click on manage plugins
+     -click on available 
+       -search for the plugins you want and check the button
+         -click on install without restart /install and restart.
+
+===you can install jenkins with plugins index
+  	-goto plungin.jenkins.io
+          -search for the plugins you want and install
+
+===Restarting jenkins after installing plugins
+	-sudo systemctl restart jenkins
+	  -sudo systemctl status jenkins
+	    -log in with username and password         
+
+
+	***EXCULTION OF JENKINS COMMAND ON TERMINAL***
+java -jar jenkins-cli.jar -s http://localhost:8085 -auth 'admin:Adm!n321' <COMMAND>
+
+NOTE:	
+	where:
+       		java -jar jenkins-cli.jar = (this is the java initating a java 		in jenkins)
+		
+		-s http://localhost:8085 = (this is a local host that will log 		on the jenkins)
+
+		-auth 'admin:Adm!n321' = (this show the author information and 		 it can also be replace with api token of jenkins)
+
+		 <command> = (this will contain the comand you want excult 		 with jenkins)
+
+
+
+
+
+
+First, install the Matrix Authorization Strategy plugin and using the Project-based Matrix Authorization Strategy assign some permissions that would allow tony to build the mytest job.
+
+Once this is done, build this job through user tony.
+
+
+Note: You should use tony's credentials from the previous question.
+
+Username: tony
+
+Password: T0ny123
+
+
+
+Plugin installation steps:
+
+
+1: Go to Manage Jenkins, then click on Plugins tab.
+
+2: Click on Available section and search for Matrix Authorization Strategy plugin.
+
+3: Then mark the box check and click on Install without restart button.
+
+4: After that click on Restart Jenkins when installation is complete and no jobs are running.
+
+
+Steps to enable Project-based Matrix Authorization Strategy:
+
+
+1: Go to Manage Jenkins, then click on Security tab.
+
+2: Select Project-based Matrix Authorization Strategy under Authorization section.
+
+3: Click on Add User and enter user name tony. After that it will appear in the matrix.
+
+4: Enable Read under Overall column, Build and Read under Job column for user tony.
+
+5: Now click on Save button on your bottom of the page.
+
+6: Login as tony user into the Jenkins server and build the job named mytest.
+
+
+
+***SYSTEM ADMINISTERING WITH JENKINS***
+The basic include:
+	-Backup
+	-Restore
+	-Moritor
+	-Scale
+	-Manage
+
+===BACKUP AND RESTOR IN JENKINS
+The 3 backup file include:
+	            *Jenkins-home
+                  |--------|-------|
+                  |                | 
+ *configuration file	         *job
+  (config.xml)
+
+
+	To back up jenkins, a Thinbackup plugin is us
+-once the thinbackup plugin is install
+-run (service jenkins restart) to restart jenkins after your plugin installation 
+-click on THINBACKUP folder at the down end of manage jenkins
+-open your matchine and creat a backup folder (eg. jenkins-backup)
+ -give the folder access to read and write
+-run pwd and copy the path 
+-add the path you have copied to thinbackup which you will find from the setting
+- save the file 
+-click on backup
+-in your matchine cd to the folder you have created and list the file you will see the backup folder.
+
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          
+===To reture jenkins 
+-click on reture select the where you which to reture from and click on enter.
+
+
+***MORINTORING JENKINS***
+To achive this you have to install morintoring plugins
+-install prometheum metrics
+-restart jenkins
+-open prometheus 
+-click on status
+-select target
+
+NOTE: before you get prometheus runing you can link it with your cloud proveder instance, this can be Azure or AWS.
+
+
+
+Let us now add a scrape config for Jenkins. Update the prometheus configuration file located at /etc/prometheus/prometheus.yml and add the following config under the scrape_configs section:
+
+
+- job_name: 'Jenkins'
+    metrics_path: /prometheus/
+    static_configs:
+      - targets: ['localhost:8085']
+
+
+Once the file is updated, restart prometheus using the below command:
+
+service prometheus restart 
+
+
+Wait for few seconds before submitting your question.
+
+
+Note: Here localhost:8085 refers to our Jenkins Controller and the /prometheus/ metrics path is exposed by the prometheus-metrics plugin that we installed previously`
+
+
+SOLUTION
+1. Edit /etc/prometheus/prometheus.yml file
+
+vi /etc/prometheus/prometheus.yml
+
+
+
+2. Under scrape_configs section add
+
+- job_name: 'Jenkins'
+    metrics_path: /prometheus/
+    static_configs:
+      - targets: ['localhost:8085']
+
+
+3. Then save the file
+
+4. Restart Prometheus Service:
+
+service prometheus restart
+
+To see the status of the configuration we used within /etc/prometheus/prometheus.yml file, refresh the Prometheus UI and then navigate to the drop down button called Status and click on Configuration.
+
+Here, you should be able to see the global configuration and configuration for specific targets such as Prometheus and Jenkins.
+
+
+Now lets test out some queries in Prometheus. Go back to the Prometheus home page (by clicking on the Prometheus button within the UI) and execute the following query:
+
+jenkins_job_count_value
+What value you got in the output?
+
+SOLUTION
+
+1. Click on the Prometheus button on the top of the terminal.
+
+2. Enter the query under Expression
+
+jenkins_job_count_value
+
+
+
+3. Then click on Execute button.
+
+4. Look for the Value of the Element.
+
+
+
+Let us see now, how we can use Grafana to visualise Jenkins metrics. Grafana is already installed and can be accessed using Grafana button on the top of the terminal.
+
+Grafana credentials are:
+
+UserName: admin
+
+Password: admin
+
+
+Note:Set a new password admin123 for the admin user.
+
+
+
+First of all, let us add Prometheus datasource in Grafana. Follow below given steps for that:
+
+-> Login into Grafana and click on Add your first datasource.
+
+-> Then select Prometheus and enter http://localhost:9090 in the URL box.
+
+-> Finally click on Save and test button at the bottom.
+
+-> Click on Grafana logo to move back to the dashboard.
+
+
+
+Let us create a dashboard in Grafana now to visualise the total number of Jenkins jobs.
+
+
+Use same Grafana credentials to login:
+
+UserName: admin
+
+Password: admin123
+
+
+Follow below given steps to create a dashboard in Grafana:
+
+
+-> Login into Grafana and click on Create your first dashboard.
+
+-> Then click on Add visualization and at the bottom enter jenkins_job_count_value in the Metrics browser box.
+
+-> Make sure Prometheus is selected as the Data source.
+
+-> On the right side under Panel options, enter Jenkins Jobs Count in Title.
+
+-> Click on Apply button on the top right corner.
+
+-> Finally click on the Save dashboard button (second button on the top right).
+
+-> Enter dashboard name as Jenkins and save it.
+
+
+As per the Grafana dashboard, how many Jenkins jobs are there?
+
+
+Make sure to look for the latest metrics in the dashboard. For that click on the time navigator option on the top right and then select Last 5 minutes.
+
+Note: Close and open the Grafana again if no changes are reflecting and wait a little as sometimes changes can take few seconds to reflect.
+
+
+
+
+
+**********************************************************************************************************
+
+
+
+
+***************************************************************
+ jenkins files
+this is a text file that contains the definitions of a jenkins pipeline
+
+jenkinfiles contain the following part in it pipeline
+*pipeline
+*stage
+*step
+
+
+Install Pipeline Jenkins plugin?
+
+
+Note: Just in case Jenkins page gets stuck after restart please try to refresh it.
+
+
+Solution
+Login into the Jenkins server and follow the below given steps:
+
+
+1. Go to Manage Jenkins.
+
+2. Click on Plugins.
+
+3. Under Available, search for Pipeline plugin.
+
+4. Select it and install.
+
+5. Once installed click on Restart Jenkins when installation is complete and no jobs are running.
+
+
+
+Create a pipeline job named hello-world, it should just echo the Hello World string.
+
+You can name the stage as per your choice.
+
+
+Solution
+ogin into the Jenkins server and follow the below given steps:
+
+
+1. On the left side click on New Item.
+
+2. Write the job name hello-world.
+
+3. Select Pipeline job.
+
+4. Under Pipeline section keep selected Pipeline script as Definition and add below given code in the Script
+
+pipeline {
+    agent any
+    stages {
+        stage('Hello') {
+            steps {
+                echo 'Hello World'
+            }
+        }
+    }
+}
+
+
+5. Finally save the job.
+
+
+
+We have a pipeline job named go-test but its incomplete.
+
+Complete the same by adding the required stages/steps as per details mentioned below:
+
+
+1. Clone a git repository.
+
+git 'https://github.com/kodekloudhub/go-webapp-sample.git'
+
+
+2. Run a shell command go test ./...
+
+sh 'go test ./...'
+
+
+
+
+
+Note: You can name the stages as per your choice.
+
+
+
+solution
+Login into the Jenkins server and follow the below given steps:
+
+
+1. Click on go-test job.
+
+2 Open the job configuration by clicking on Configure button.
+
+3. Under the pipeline section, complete the Script and the final code should look like as below
+
+
+pipeline {
+    agent {
+        label {
+            label 'master'
+            customWorkspace "${JENKINS_HOME}/${BUILD_NUMBER}/"
+        }
+    }
+    environment {
+        Go111MODULE='on'
+    }
+    stages {
+        stage('Test') {
+            steps {
+                git 'https://github.com/kodekloudhub/go-webapp-sample.git'
+                sh 'go test ./...'
+            }
+        }
+    }
+}
+
+
+4. Finally save the job.
+
+
+Now modify the go-test pipeline job as per details mentioned below:
+
+
+1. Remove the sh 'go test ./...' step.
+
+2. Add an another stage (name it as per your choice) to build a docker image from the cloned code. The required Jenkins plugins have already been installed i.e Docker and Docker pipeline. The image should be tagged as adminturneddevops/go-webapp-sample
+
+
+solution
+Login into the Jenkins server and follow the below given steps:
+
+
+1. Click on go-test job.
+
+2 Open the job configuration by clicking on Configure button.
+
+3. Under the pipeline section, modify the Script and the final code should look like as below
+
+
+pipeline {
+    agent {
+        label {
+            label 'master'
+            customWorkspace "${JENKINS_HOME}/${BUILD_NUMBER}/"
+        }
+    }
+    environment {
+        Go111MODULE='on'
+    }
+    stages {
+        stage('Test') {
+            steps {
+                git 'https://github.com/kodekloudhub/go-webapp-sample.git'
+            }
+        }
+        stage('build') {
+            steps {
+                script{
+                    image = docker.build("adminturneddevops/go-webapp-sample")
+                }
+            }
+        }
+    }
+}
+
+
+4. Finally save the job.
+
+
+**************************************************************
+Jenkins build agent
+
+A build agent is typically a machine, or container, which connects to a Jenkins controller and executes tasks when directed by the controller.
+
+Install SSH Build Agents Jenkins plugin.
+
+solution
+Login into the Jenkins server and follow the below given steps:
+
+1. Go to Manage Jenkins.
+2. Click on Plugins.
+3. Under Available, search for SSH Build Agents plugin.
+4. Select it and install.
+5. Once installed click on Restart Jenkins when installation is complete and no jobs are running.
+
+==================================
+Create a username and password based credentials in Jenkins as per details mentioned below:
+
+
+Username: bob
+
+Password: caleston123
+
+solution
+Login into the Jenkins server and follow the below given steps:
+
+1. Go to Manage Jenkins.
+2. Click on Credentials.
+3. Click on (global) under Domains.
+4. From the option on the right side, click on Add Credentials.
+5. Enter bob under Username.
+6. Enter caleston123 under Password.
+
+7. Leave other options as it is and click on OK.
+
+
+We have a centOS based host node01, which we want to use as a Jenkins agent node.
+But before adding it to Jenkins as a node, we need to install some required dependencies on it.
+
+
+You can SSH into node01 from Jenkins server using below given credentials:
+
+
+Host Name: node01
+
+Username: bob
+
+Password: caleston123
+
+
+Use below given command to SSH:
+
+ssh bob@node01
+
+
+
+Please install the required dependencies on this host, also make sure to install the dependencies which are compatible with the installed Jenkins version.
+
+Create a Permanent Agent type agent node named linux-node as per details mentioned below:
+
+
+1. It should be launched via SSH.
+
+2. You can use the credentials you created in the previous question.
+
+3. The Host value should be node01
+
+4. Its remote root directory should be /home/bob
+
+5. Label it as node01
+
+6. Make sure Only build jobs with label expressions matching this node option is selected for Usage.
+
+
+Note: Just in case the node is in error state after creating the same, then try to relaunch it.
+
+Login into the Jenkins server and follow the below given steps:
+
+1. Now go to Manage Jenkins.
+2. Click on Nodes and Clouds option under System Configuration.
+3. From the option available on the right side, click on New Node button.
+
+4. Enter the Node name i.e linux-node.
+
+5. Enable Permanent Agent option and click on OK.
+
+6. Enter /home/bob under Remote root directory.
+
+7. Enter node01 under Labels.
+
+8. Select Only build jobs with label expressions matching this node option for Usage.
+
+9. Select Launch Agents via SSH under Launch method.
+
+10. Enter node01 under Host and select the credentials you created in the previous question.
+
+11. Under Host Key Verification Strategy, select Non verifying verification strategy.
+
+12. Leave all other options as it is and click on Save
+
+13. Click on the linux-node and there shouldn't be any errors.
+
+14. Just in case the linux-node node is in error state, then try to relaunch it.
+
+---------------------------------------------
+Create a freestyle job named node-job, and make sure it is restricted to run on linux-node node.
+
+
+Configure it to echo hello world string.
+
+solution
+Login into the Jenkins server and follow the below given steps:
+
+
+1. Click on New Item.
+
+2. Enter the job name node-job
+
+3. Select Freestyle project and click on OK.
+
+4. In General section, select the Restrict where this project can be run option and enter node01 under Label Expression.
+
+5. Under Build, select Execute shell and enter the command:
+
+echo 'hello world'
+
+
+6. Finally click on Save button.
+
+
+----------------------------------------------
+Create a pipeline job named node-pipeline, and make sure it is restricted to run on linux-node node.
+
+it should just echo the Hello World string.
+
+
+You can name the stage as per your choice.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+=====================================================================
+BLUE OCEAN
+
+This is a UI exprince for jenkins that inprove your the interface userage exprince
+
+What is the default URL of BlueOcean UI in Jenkins? <jenkin-url>blue
+
+-----------------------------
+Install the Blue Ocean Jenkins plugin.
+After the installation, verify the same by accessing the BlueOcean UI.
+
+
+Does BlueOcean provide native integration for branch and pull requests with GitHub and Bitbucket? yes
+
+Note: Just in case Jenkins page gets stuck after restart please try to refresh it manually.
+
+solution
+Login into the Jenkins server and follow the below given steps:
+
+1. Go to Manage Jenkins.
+2. Click on Plugins.
+3. Click on Available and search for Blue Ocean plugin.
+4. Select the same and install.
+
+5. Once installed click on Restart Jenkins when installation is complete and no jobs are running.
+
+
+You can access the BlueOcean UI either by directly opening the <jenkins-url>/blue URL or by clicking on the Open Blue Ocean option, on the left side of Jenkins dashboard.
+----------------------------------------
+
+
+
+Create a pipeline in BlueOcean as per details mentioned below:
+
+
+1. Although source code is hosted on GitHub, but select Git under Where do you store your code to avoid token requirements.
+
+2. Repository URL is https://github.com/kodekloudhub/go-webapp-sample.git.
+
+3. Leave the Username and Password blank.
+
+
+
+
+solution
+Login into the Jenkins server and follow the below given steps:
+
+
+1. Click on Open Blue Ocean.
+
+2 If you get a Welcome to Jenkins pop-up then click on Create a new Pipeline option, otherwise click on New Pipeline option under Pipelines.
+
+3. Under Where do you store your code?, click on Git.
+
+4. Enter the repository URL i.e https://github.com/kodekloudhub/go-webapp-sample.git.
+
+5. Leave the Username and Password blank and click on Create Pipeline.
+
+6. It will take few seconds and go-webapp-sample pipeline will be created automatically because this repository already contains a Jenkinsfile.
+------------------------------------------------------------
+
+
+JENKINS SECURITY
+
+Which section of the web UI allows a Jenkins administrator to enable, configure, or disable key security features which apply to the entire Jenkins environment? securty
+
+Which among the following is the primary mechanism for securing a Jenkins environment against unauthorized usage? Acess control
+
+Using both the Security Realm and Authorization configurations it is possible to configure very relaxed or very rigid authentication and authorization schemes in Jenkins.
+
+-----------------------------------------------
+Let's extend some Authorization capabilities of Jenkins to support even more authorization schemes.
+Install Role-based Authorization plugin.
+
+
+Note:
+
+Observe the new available options under Authorization using the standard Manage Jenkins > Security screen after the plugin installation.
+
+SOLUTION
+Plugins can be installed using Plugins Manager through the standard Manage Jenkins > Plugins screen.
+
+By default, Jenkins run its builds on the built-in node. It is done to make smooth transition towards learning Jenkins but is inadvisable in long term.
+It is due to the fact that any builds running on the built-in node have the same level of access to the controller file system as the Jenkins process.
+
+
+--------------------------------------------------------
+Configure Jenkins to prevent builds from running on the Built-In Node directly?
+
+SOLUTION
+Navigate to Manage Jenkins » Manage Nodes and Clouds screen and change the number of Executors to 0 for the Built-In Node.
+----------------------------------------------------------
+
+PROJECT
+Jenkins server is already installed and it's running on port 8085. You can access the same using Jenkins button on the top bar. Login into the Jenkins server using below given credentials:
+
+
+Username: bob
+
+Password: bob321
+
+
+Apart from this there is a Gitea server installed, which has a repository named go-app. This repository has two branches dev and master, you will get to know about their usage in the next question. You can access the Gitea server using Gitea button on the top bar. Login into the Gitea server using below given credentials:
+
+
+Username: bob
+
+Password: bob123
+
+
+Notes:
+
+
+1. You might need to restart Jenkins service after installing some plugins or after making some configuration changes etc. In such case please make sure Jenkins service is back up before you submit your solution.
+
+
+2. Please make a note of Jenkins credentials given above.
+
+
+--------------------------------------------------------
+
+Our application development team has recently finished the MVP development for one of the applications and it's ready to be deployed on production.
+
+The go-app repository on the Gitea server contains the source code of this application. The dev branch of this repository is used for testing, hence we want to deploy it on the dev environment and the master branch should be deployed on the production environment.
+
+
+On dev server /opt/go-app is the document root of the application and we have already setup the dev branch over there for your convenience. In your build step, you will just need to pull the latest dev branch code from the repository using git pull command. You can access the dev server using below given credentials:
+
+
+Host: gotest-dev01
+
+User: bob
+
+Password: caleston123
+
+
+Similarly on production server /opt/go-app is the document root of the application and we have already setup the master branch over there for your convenience. In your build step, you will just need to pull the latest master branch code from the repository using git pull command. You can access the production server using below given credentials:
+
+
+Host: gotest-prod01
+
+User: bob
+
+Password: caleston123
+
+
+Create a pipeline job in Jenkins, and configure it as per details mentioned below:
+
+
+Prerequisites:
+
+-> Install the required plugins which are needed for adding SSH agent nodes and for creating pipeline jobs.
+
+-> Add dev and production servers as SSH node agents in Jenkins.
+
+-> You can use /opt as the Remote root directory for both of these nodes to avoid any permission issues.
+
+-> To make nodes work, you will also need to add the respective credentials in Jenkins for these servers.
+
+
+Job configuration:
+
+-> The job name should be go-app-deployment
+
+-> It must be a pipeline job.
+
+-> The first stage here should be to build the dev branch code which must be deployed on the dev server/environment, you can name the stage as per your choice. As we have already setup the repo/branch on the server so you will just need to run the git pull command.
+
+Here is a hint, how you can make it run on the dev server. To do so, add an agent configuration in each of your stages like this:
+
+stage('Build Dev') {
+    agent {
+        label {
+            label 'dev'
+            customWorkspace "/opt/go-app"
+        }
+    }
+    steps {
+        sh 'git pull'
+    }
+}
+
+
+Please note that label 'dev' is the label you will give to your node (so update it accordingly) and you will need to set customWorkspace "/opt/go-app" (its same for both of the servers/environments) to make it work on this setup/back-end.
+
+
+-> The second stage should be to run some unit tests (again you can name the stage as per your choice). You can execute the tests using a stage like:
+
+stage('Test Dev') {
+    agent {
+        label {
+            label 'dev'
+            customWorkspace "/opt/go-app"
+        }
+    }
+    steps {
+        sh 'go test ./...'
+    }
+}
+
+
+
+-> The last stage for dev would be to deploy the application. You can use a stage like:
+
+stage('Deploy Dev') {
+    agent {
+        label {
+            label 'dev'
+            customWorkspace "/opt/go-app"
+        }
+    }
+    steps {
+        script {
+            withEnv ( ['JENKINS_NODE_COOKIE=do_not_kill'] ) {
+                sh 'go run main.go &'
+            }
+        }
+    }
+}
+
+
+You must have noticed an extra parameter in this stage i.e withEnv ( ['JENKINS_NODE_COOKIE=do_not_kill'] ), it is needed to make sure Jenkins doesn't kill the background process we are starting in this stage on the respective server.
+
+
+-> Similarly configure the same stages (with different name and prod specific values) for the production deployment. So the pipeline will have total 6 stages (three for each environment).
+
+-> Make sure to build the job at least once and make sure its building successfully.
+
+
+SOLUTION
+Login into the Jenkins server and follow the below given steps:
+
+Install Plugins:
+
+1. Go to Manage Jenkins.
+2. Click on Plugins.
+3. Under Available, search for SSH Build Agents plugin and select it.
+4. Now search for Pipeline plugin and select it.
+5. Now install these plugins.
+6. Once installed click on Restart Jenkins when installation is complete and no jobs are running.
+
+
+Add Credentials:
+
+1. Go to Manage Jenkins.
+2. Click on Credentials.
+3. Click on (global) under Domains.
+4. From the option on the right side, click on Add Credentials.
+5. Enter bob under Username.
+6. Enter caleston123 under Password.
+
+7. Leave other options as it is and click on OK.
+
+
+Add Nodes:
+
+1. Go to Manage Jenkins.
+2. Click on Nodes and Clouds.
+3. From the option available on the right side, click on New Node.
+
+4. Enter the Node name i.e dev.
+
+5. Enable Permanent Agent option and click on OK.
+
+6. Enter /opt under Remote root directory.
+
+7. Enter dev under Labels.
+
+8. Select Launch Agents via SSH under Launch method.
+
+9. Enter gotest-dev01 under Host and select the credentials you created.
+
+10. Under Host Key Verification Strategy, select Non verifying verification strategy.
+
+11. Leave all other options as it is and click on Save
+
+12. Click on the dev node and there shouldn't be any errors.
+
+13. Just in case the dev node is in error state, then try to relaunch it.
+
+14. Follow same steps for adding prod node, just take care about the node name, label and host.
+
+
+Create and Configure the job:
+
+1. On the left of the Jenkins dashboard, click on New Item.
+
+2. Enter the job name go-app-deployment.
+
+3. Select Pipeline job and click on OK.
+
+4. Under Pipeline section keep selected Pipeline script as Definition and add below given code in the Script
+
+pipeline {
+    agent none
+    stages {
+        //DEV
+        stage('Build Dev') {
+            agent {
+              label {
+                label 'dev'
+                customWorkspace "/opt/go-app"
+              }
+            }
+            steps {
+                sh 'git pull'
+            }
+        }
+        stage('Test Dev') {
+            agent {
+              label {
+                label 'dev'
+                customWorkspace "/opt/go-app"
+              }
+            }
+            steps {
+                sh 'go test ./...'
+            }
+        }
+        stage('Deploy Dev') {
+            agent {
+              label {
+                label 'dev'
+                customWorkspace "/opt/go-app"
+              }
+            }
+            steps {
+              script {
+                withEnv ( ['JENKINS_NODE_COOKIE=do_not_kill'] ) {
+                  sh 'go run main.go &'
+                  }
+                }
+            }
+        }
+        //PROD
+        stage('Build Prod') {
+            agent {
+              label {
+                label 'prod'
+                customWorkspace "/opt/go-app"
+              }
+            }
+            steps {
+                sh 'git pull'
+            }
+        }
+        stage('Test Prod') {
+            agent {
+              label {
+                label 'prod'
+                customWorkspace "/opt/go-app"
+              }
+            }
+            steps {
+                sh 'go test ./...'
+            }
+        }
+        stage('Deploy Prod') {
+            agent {
+              label {
+                label 'prod'
+                customWorkspace "/opt/go-app"
+              }
+            }
+            steps {
+              script {
+                withEnv ( ['JENKINS_NODE_COOKIE=do_not_kill'] ) {
+                  sh 'go run main.go &'
+                  }
+                }
+            }
+        }
+    }
+}
+
+
+5. Finally save the job and build.
+
+
+
+Once deployed, you should be able to access the dev and production applications using Dev App and Prod App buttons respectively on the top of the terminal. The credentials are as below:
+
+Dev:
+
+User: test
+
+Password: test
+
+
+Production:
+
+User: appuser
+
+Password: app321

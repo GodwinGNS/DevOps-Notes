@@ -1,0 +1,207 @@
+********************************WORKING WITH DJANGO**************************************
+
+
+
+The starting point with working with django is installing python3.
+https://www.python.org/ftp/python/3.12.2/python-3.12.2-amd64.exe
+
+While using django to create project, it is recommended to always have a virtual environment where you will keep all python libraries used for the project
+
+Here's a list of common Django commands along with brief descriptions of their purposes:
+
+django-admin startproject <project_name>: Creates a new Django project with the given name.
+
+django-admin startapp <app_name> . : Creates a new Django app within the project directory.(recommeded)
+
+python manage.py runserver: Starts the development server.
+
+python manage.py migrate: Applies any pending database migrations.
+
+python manage.py makemigrations: Creates new database migrations based on changes to models.
+
+python manage.py createsuperuser: Creates a new superuser for the Django admin interface.
+
+python manage.py shell: Starts the Django shell for interactive Python coding with Django.
+
+python manage.py collectstatic: Collects static files from each of your applications into …
+
+Take not of those commands, we are going to be using them to interract with out django project
+
+
+*********************working out your project in VS code*******************
+download and install vs code...
+creat a new file with any convinate name for it in yor desktop...
+NOTE:the file you have created is where all your libries will be stored
+open with vs code...
+open your a new terminal in vs code...
+
+Run the following command:
+
+python
+(this will show you the version of python you have install, and should incase you don't have it install one and continue ...)
+
+env\Scripts\activate
+(this will activate your virtual envrnment you can always deactivate this by simply typing and runing  'deactivate')
+
+pip install django
+(this will install django)
+
+pip install pytz
+(this will bring the Olson tz database to python. the library allow an accourate and cross platform timezone)
+
+pip install tzdata
+(this contain python package zic-compiled binaries for the IANA timezone database)
+
+
+************************starting up your project**********************
+run
+
+django-admin startproject <project_name> .
+NOTE the '.'
+
+doing only this without a dot for instance django-admin startproject social_site .
+will only create a folder name social_site and another folder that would house the manage.py file
+this is stressful for me
+the best practice is to just do
+django-admin startproject social_site .
+Take note of the space and the do 
+
+now type and enter
+django-admin startproject social_site .
+
+this will creat in your folder 
+1. Social_site folder that contain the follow
+_init_.Py 
+Asgi.py
+Settings.py
+URLs.py
+Wsgi.py
+
+NOTE: THE asgi.py and setting.py is the most import file.
+
+2.manage.py file.
+
+***********************runing your app******************************
+run
+python manage.py runserver
+(this will start runuing your script)
+
+While running click this
+http://127.0.0.1:8000/
+copy and paste this on your browser
+http://127.0.0.1:8000/
+
+this will startup your work interface.
+
+
+********************************CREATING AN APP IN OUR SOCIAL_SITE***************
+
+
+Starting up our social app, its important that we conside the type of app we want to build. let say for instance, we are considering building a facebook reprecant. choosen a particular interface such as the chart interface.
+
+NOTE: to start-up a project you need to run:
+django-admin startproject <No of your project> 
+
+Immediately a project is created, manage.py file will be seen. This manage.py file is what you will be using for command such as runserver, makemigrations, migrate, flush, collectstatic, etc.
+
+To start up a project unit, run:
+python manage.py startapp app_name (in our case we are building a chart bot)
+we can say:
+python manage.py startapp chart_bot
+
+the basic set up you will see in your vs code once you run the above chart_bot command is:
+_init_.py
+admin.py
+app.py
+models.py
+tests.py
+view.py
+
+NOTE:
+The admin.py is a Python module used to register models with the Django admin interface. This module allows developers to define how models should be displayed and managed in the admin interface.
+
+app.py serves as a configuration file for the app and is used internally by Django. You do not need to make changes to it.
+
+The models.py represent the structure of the data in your database. Each model typically corresponds to a database table, and each attribute of the model represents a database field.
+
+
+CREATING A TABLE FOR OUR CHART_BOT
+Chat
+id
+sender id
+receiver id
+message
+date and time of message
+has_been_read
+
+The above the attributes of our chat model. The chat model represent the table of the database. The attributes mentioned above are the database fields
+
+You do not need to write all the sql in django
+with a models.py file, you are good to go
+
+When you open models.py, you will see;
+from django.db import models.
+
+This means that django has a lib. you can import your set-up from.
+you can trace this at the folder that house your django, under this you will see modles this where all the lib. you to mport into your project are.
+
+
+PAYTHON CLASS
+
+In python, a class is a blueprint for creating objects (instances). It defines the properties (attributes) and behaviors (methods) that objects of that class will have.
+
+Let say for instance
+when you think of a car, you came to an understanding that there are different type of cars, brand, makes, color etc.
+
+class Car:
+    # Class attribute
+    num_wheels = 4
+    
+    # Constructor method (initialize object)
+    def _init_(self, make, model, year):
+        self.make = make
+        self.model = model
+        self.year = year
+    
+    # Method to display car information
+    def display_info(self):
+        print(f"Make: {self.make}, Model: {self.model}, Year: {self.year}")
+
+the above is a python cord.
+
+Adding more features to the Car Attribute above under the num_wheels = 4 attributes
+
+From the features of a car I listed above
+
+For instance,
+class Car:
+    # Class attribute
+    num_wheels = 4
+    color="red"
+    brand_name="Toyota"
+
+Good, Since I entered toyota, if I say I want Lexus, how would I do it?
+instead of creating new class and attributes again and again, since all cars have similar things like tyre, brand or model, wheels etc, we create what is called instance or object.
+
+I would simply say
+my_lexus= Car(4, "blue", "Lexus")
+my_range_rover= Car(4, "black", "Range Rover)
+My_benz= Car(4, ‘blue’, ‘Benz’)
+
+NOTE:
+the color, wheel, brand_name served as the fields, while 4, blue, black, lexus, range rover, benz served as the values to describe different brands of cars.
+
+The class Car is a blueprint for creating objects (instances) such as blue lexus, black rangrover, blue benz so  on and so forth
+
+you can set up this as thus
+
+class Car:
+   num_wheels=‘’ ‘’
+    brand_name=" "
+    color = ‘’ ‘’
+
+my_lexus= Car(4, "blue", "Lexus")
+my_range_rover= Car(4, "black", "Range Rover)
+My_benz= Car(4, ‘blue’, ‘Benz’)
+
+END OF TODAY...

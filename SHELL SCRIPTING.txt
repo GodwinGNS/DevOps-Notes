@@ -1,0 +1,733 @@
+SHELL SCRIPTING
+First create a directory mars-mission.
+
+Then run the below commands. Remember to provide the mission name on each command.
+
+rocket-add
+
+rocket-start-power
+
+rocket-internal-power
+
+rocket-start-sequence
+
+rocket-start-engine
+
+rocket-lift-off
+
+rocket-status
+
+-----------------------------------------------
+Create a shell script in the home directory called create-directory-structure.sh. The script should do the following tasks:
+
+
+Create the following directories under /home/bob/countries - USA, UK, India
+Create a file under each directory by the name capital.txt
+Add the capital cities name in the file - Washington, D.C, London, New Delhi
+Print uptime of the system
+
+solution
+mkdir countries
+cd countries
+mkdir USA India UK
+echo "Washington, D.C" > USA/capital.txt
+echo "London" > UK/capital.txt
+echo "New Delhi" > India/capital.txt
+uptime
+
+-----------------------------------------------------
+
+Let's update our script to use a variable by the name mission_name.
+
+
+The script is available at the path /home/bob/create-and-launch-rocket. Update it to define a variable mission_name and set it's value to lunar-mission. Replace all instances of lunar-mission with the new variable $mission_name
+
+
+solution
+mission_name=lunar-mission
+
+mkdir $mission_name
+
+rocket-add $mission_name
+rocket-start-power $mission_name
+rocket-internal-power $mission_name
+rocket-start-sequence $mission_name
+rocket-start-engine $mission_name
+rocket-lift-off $mission_name
+
+rocket-status $mission_name
+---------------------------------------------------------------------
+
+Let's update our script to use a command line variable in the place of lunar-mission
+
+
+The script is available at the path /home/bob/create-and-launch-rocket. Set the variable mission_name to the command line argument $1
+
+solution
+mission_name=$1
+
+mkdir $mission_name
+
+rocket-add $mission_name
+
+rocket-start-power $mission_name
+rocket-internal-power $mission_name
+rocket-start-sequence $mission_name
+rocket-start-engine $mission_name
+rocket-lift-off $mission_name
+
+rocket-status $mission_name
+
+
+****************************************************************************************
+ARETHMATIC IN SHELL SCRIPTING
+
+Update the script to use two command line arguments $1 and $2 instead of the statically defined values for A and B.
+
+
+Once done, you should be able to pass in the value for both variables like this ./calculation.sh 10 5
+
+Note: If you are using command line variables directly within the expression $(( )) then you must use $1 and $2 and not just 1 and 2 eg: $(( $1 + $2 )).
+
+SOLUTION:
+
+intally in vim
+
+A=20
+B=10
+
+echo "Sum is $(( A + B )) "
+
+echo "Difference is $((A-B)) "
+
+echo "Product is $((A/B)) "
+
+echo "Quotient is $((A*B)) "
+~                               
+
+
+finally in vim
+
+A=$1
+B=$2
+
+echo "Sum is $(( $1 + $2 ))"
+
+echo "Difference is $(($1-$2)) "
+
+echo "Product is $(($1/$2)) "
+
+echo "Quotient is $(($1*$2)) "
+~                                                                                      
+~                                                                                      
+~   
+
+result
+bob@caleston-lp10:~$ ls 
+calculation.sh  media
+bob@caleston-lp10:~$ vi calculation.sh 
+bob@caleston-lp10:~$ bash calculation.sh 10 5
+Sum is 15
+Difference is 5 
+Product is 2 
+Quotient is 50 
+bob@caleston-lp10:~$ bash calculation.sh 9 3 
+Sum is 12
+Difference is 6 
+Product is 3 
+Quotient is 27 
+bob@caleston-lp10:~$ vi calculation.sh 
+bob@caleston-lp10:~$ 
+
+--------------------------------------------------------------------------------
+
+Create a shell script called /home/bob/calculate-price.sh and it must accept 2 numbers as command line parameters $1 and $2. It must print the product (multiplied value) of the numbers as output. But this time in a new format - The total price for items is 1000 dollars
+
+SOLUTION
+
+num1=$1
+num2=$2
+
+echo "The total price for items is $(($1*$2)) dollars"
+
+make calculate-price.sh excutable
+chmod 777 calculate-price.sh
+
+bash calculate-price.sh 10 100
+
+result
+The total price for items is 1000 dollars
+
+
+--------------------------------------------------------------------------------
+
+A new shell script is created in your home directory by the name /home/bob/calculate-total-apples.sh and it prints the number of total apples using the formula total_apples = baskets x apples_per_basket. However the script does not execute as expected. Troubleshoot and fix the issue.
+
+SOLUTION
+initally in vim
+baskets=4
+apples_per_basket=5
+
+total_apples=`expr $baskets * $apples_per_basket`
+
+echo "Total Apples = $total_apples"
+
+finally in vim
+baskets=4
+apples_per_basket=5
+
+total_apples=`expr $baskets \* $apples_per_basket`
+
+echo "Total Apples = $total_apples"
+
+--------------------------------------------------------------------------------------
+
+Create a new script called calculate-average.sh. The script should accept exactly 3 command-line arguments and calculate the average.
+
+
+The result should not round the value to the nearest integer.
+
+SOLUTION
+num1=$1
+num2=$2
+num3=$3
+sum=$(( num1 + num2 + num3 ))
+average=$(echo "$sum / 3" | bc -l)
+echo $average
+
+
+
+
+******************************************************************************************************
+FLOW CONTROL
+CONDITIONAL LOGICS
+
+
+Let's update our script to use a conditional statement to print the cause if the status is failed
+
+
+The script is available at the path /home/bob/create-and-launch-rocket. Add a conditional statement at the end to check if rocket_status variable is set to failed. If it is run the rocket-debug command
+
+SOLUTION
+intally in vim
+mission_name=$1
+  
+mkdir $mission_name
+
+rocket-add $mission_name
+
+rocket-start-power $mission_name
+rocket-internal-power $mission_name
+rocket-start-sequence $mission_name
+rocket-start-engine $mission_name
+rocket-lift-off $mission_name
+
+rocket_status=$(rocket-status $mission_name)
+
+echo "The status of launch is $rocket_status"
+~                                             
+
+finally in vim
+mission_name=$1
+  
+mkdir $mission_name
+
+rocket-add $mission_name
+
+rocket-start-power $mission_name
+rocket-internal-power $mission_name
+rocket-start-sequence $mission_name
+rocket-start-engine $mission_name
+rocket-lift-off $mission_name
+
+rocket_status=$(rocket-status $mission_name)
+
+echo "The status of launch is $rocket_status"
+
+if [ $rocket_status = "failed" ]
+then
+        rocket-debug $mission_name
+elif [$rock_status = "success"   
+then
+        echo "this is successful"
+else
+        echo "the state is not failed or successful"
+fi 
+---------------------------------------------------------------------------------------
+
+Create a shell script in the home directory called check_dir.sh. The script should print the line Directory exists if the directory /home/bob/caleston exists. If not, it should print Directory not found
+
+SOLUTION
+if [ -d /home/bob/caleston ]
+then
+        echo "Directory exists"
+else
+        echo "Directory not found"
+fi
+--------------------------------------------------------------------------------------------
+
+Create a shell script in the home directory called check_greater.sh. The script should check the greater of the two command line arguments $1 and $2 and print which ever is greater
+
+SOLUTION
+
+A=$1
+B=$2
+
+if [ $1 -gt $2 ]
+then
+        echo " $1 "
+else
+        echo " $2 "
+fi     
+-----------------------------------------------------------------------------------------------
+
+Develop a shell script /home/bob/print-month-name.sh that accepts the number of a month as input and prints the name of the respective month. eg ./print-month-name.sh 1 should print January and ./print-month-name.sh 5 should print May. Also keep these in mind.
+
+
+The script must accept a month number as a command line argument.
+
+If a month number is not provided as command line argument, the script must exit with the message No month number given.
+
+The script must not accept a value other than 1 to 12. If not the script must exit with the error Invalid month number given.
+
+SOLUTION:
+
+month_number=$1
+
+if [ -z $month_number ]
+then
+  echo "No month number given. Please enter a month number as a command line argument."
+  echo "eg: ./print-month-number 5"
+  exit
+fi
+
+if [[ $month_number -lt 1 ]] || [[ $month_number -gt 12 ]]
+then
+  echo "Invalid month number given. Please enter a valid number - 1 to 12."
+  exit
+fi
+
+if [ $month_number -eq 1 ]
+then
+  echo "January"
+elif [ $month_number -eq 2 ]
+then
+  echo "February"
+elif [ $month_number -eq 3 ]
+then
+  echo "March"
+elif [ $month_number -eq 4 ]
+then
+  echo "April"
+elif [ $month_number -eq 5 ]
+then
+  echo "May"
+elif [ $month_number -eq 6 ]
+then
+  echo "June"
+elif [ $month_number -eq 7 ]
+then
+  echo "July"
+elif [ $month_number -eq 8 ]
+then
+  echo "August"
+elif [ $month_number -eq 9 ]
+then
+  echo "September"
+elif [ $month_number -eq 10 ]
+then
+  echo "October"
+elif [ $month_number -eq 11 ]
+then
+  echo "November"
+elif [ $month_number -eq 12 ]
+then
+  echo December
+fi
+
+NOTE: Your answer may differ from the provided solution, however, as long as the scripts carries out all the tasks mentioned in the question, the test should pass.
+
+
+
+************************************************************************************************************
+FLOW COTROL >LOOP FOR
+
+Develop a new script at /home/bob/launch-rockets.sh to call the create-and-launch-rocket script to launch 5 rockets for the following missions using a for loop.
+
+
+lunar-mission, mars-mission, jupiter-mission, saturn-mission, mercury-mission
+
+SOLUTION
+
+for mission in $(cat /home/bob/missions.txt)
+do
+  bash /home/bob/create-and-launch-rocket $mission
+done
+-------------------------------------------------------------------------------
+
+Let us now update the script /home/bob/launch-rockets.sh to read mission names from a file.
+
+
+Mission names are located at /home/bob/mission-names.txt
+
+SOLUTION
+for mission in $(cat /home/bob/mission-names.txt)
+do
+  bash /home/bob/create-and-launch-rocket $mission
+done
+----------------------------------------------------------------------------------
+
+Create a simple script called loop.sh at /home/bob. The script should make use of a loop and print the numbers 31 to 40 with each number in a new line.
+
+SOLUTION
+for mission in {31..40}
+do
+        echo $mission
+done
+
+----------------------------------------------------------------------------------
+
+We have a few different applications running on this system. The list of applications is stored in the /home/bob/apps.txt file. Each application has it's logs stored in the /var/log/apps directory under a file with its name. Check it out!
+
+
+A simple version of the script has been developed for you named /home/bob/count-requests.sh, which inspects the log file of an application and prints the number of GET, POST, and DELETE requests. Update the script to use a for loop to read the list of applications from the apps.txt file, and count the number of requests for each application, and display it in a tabular format like this.
+
+Log name         GET         POST          DELETE
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  - 
+
+finance            10           20            50  
+
+marketing          20           10            30 
+
+SOLUTION
+the content of of count-requests.sh
+bob@caleston-lp10:~$ cat count-requests.sh 
+
+echo -e " Log name   \t      GET      \t      POST    \t   DELETE "
+echo -e "------------------------------------------------------------"
+
+get_requests=$(cat finance_app.log | grep "GET" | wc -l)
+post_requests=$(cat finance_app.log | grep "POST" | wc -l)
+delete_requests=$(cat finance_app.log | grep "DELETE" | wc -l)
+echo -e " Finance    \t ${get_requests}    \t    ${post_requests}   \t   ${delete_requests}"
+
+
+finally in vim
+echo -e " Log name   \t      GET      \t      POST    \t   DELETE "
+echo -e "------------------------------------------------------------"
+
+for app in $(cat /home/bob/apps.txt)
+do
+  get_requests=$(cat /var/log/apps/${app}_app.log | grep "GET" | wc -l)
+  post_requests=$(cat /var/log/apps/${app}_app.log | grep "POST" | wc -l)
+  delete_requests=$(cat /var/log/apps/${app}_app.log | grep "DELETE" | wc -l)
+  echo -e " ${app}    \t ${get_requests}    \t    ${post_requests}   \t   ${delete_requests}"
+
+done
+
+--------------------------------------------------------------------------------------------------
+
+
+We have some images under the directory /home/bob/images. Develop a script /home/bob/rename-images.sh to rename all files within the images folder that has extension jpeg to jpg. A file with any other extension should remain the same.
+
+
+Tip: Use a for loop to iterate over the files within /home/bob/images
+
+Tip: Use an if conditional to check if the file extension is jpeg.
+
+Tip: Use mv to rename a file.
+
+To replace jpeg to jpg in a filename use echo user1.jpeg | sed 's/jpeg/jpg/g'.
+
+SOLUTION
+
+for file in $(ls images)
+do
+        if [[ $file = *.jpeg ]]
+                then
+                new_name=$(echo $file| sed 's/jpeg/jpg/g')
+                mv images/$file images/$new_name
+        fi
+done
+
+
+******************************************************************************************
+LOOP-WHILE
+
+Let's update our script to take into consideration the time a rocket spends in a launching state.
+
+
+The script is available at the path /home/bob/create-and-launch-rocket. Add a while loop before the if conditional statements that checks the status of rocket to wait until the rocket is in a launching state
+
+SOLUTION
+
+initally in vim
+mission_name=$1
+  
+mkdir $mission_name
+
+rocket-add $mission_name
+
+rocket-start-power $mission_name
+rocket-internal-power $mission_name
+rocket-start-sequence $mission_name
+rocket-start-engine $mission_name
+rocket-lift-off $mission_name
+
+rocket_status=$(rocket-status $mission_name)
+
+echo "The status of launch is $rocket_status"
+
+if [ $rocket_status = "failed" ]
+then
+  rocket-debug
+fi
+~               
+
+finally in vim
+
+**************************************************************************************************************
+
+SHEBANG
+!#/bin/bash
+
+-------------------------------------------------
+Let's update our script to exit with the correct exit code.
+
+
+The script is available at the path /home/bob/create-and-launch-rocket. Update the script to exit with exit code 25 if the status is failed, after printing the debug reason.
+
+SOLUTION
+
+
+mission_name=$1
+
+mkdir $mission_name
+
+rocket-add $mission_name
+
+rocket-start-power $mission_name
+rocket-internal-power $mission_name
+rocket-start-sequence $mission_name
+rocket-start-engine $mission_name
+rocket-lift-off $mission_name
+
+rocket_status=$(rocket-status $mission_name)
+
+echo "The status of launch is $rocket_status"
+
+if [ $rocket_status = "launching" ]
+then
+  sleep 2
+  rocket_status=$(rocket-status $mission_name)
+fi
+
+if [ $rocket_status = "failed" ]
+then
+  rocket-debug
+  exit 25
+fi
+
+
+
+
+**********************************************************************************************
+	E COMERCES APP DEPLOYMENT USING SHELL
+Develop a shell script - /home/bob/deploy-ecommerce-application.sh - to automate the deployment of the KodeKloud E-Commerce Application. Click on the tab called documentation on the top-right of the terminal.
+
+
+You may view the web application to verify by clicking on the KodeKloud E-Commerce Application tab at the top of your terminal. Ensure the web application is accessible visible and it lists all products.
+
+Remember, Bob's password - caleston123
+
+
+
+
+SOLUTIONvi 
+
+#!/bin/bash
+#
+# Automate ECommerce Application Deployment
+# Author: Mumshad Mannambeth
+
+#######################################
+# Print a message in a given color.
+# Arguments:
+#   Color. eg: green, red
+#######################################
+function print_color(){
+  NC='\033[0m' # No Color
+
+  case $1 in
+    "green") COLOR='\033[0;32m' ;;
+    "red") COLOR='\033[0;31m' ;;
+    "*") COLOR='\033[0m' ;;
+  esac
+
+  echo -e "${COLOR} $2 ${NC}"
+}
+
+#######################################
+# Check the status of a given service. If not active exit script
+# Arguments:
+#   Service Name. eg: firewalld, mariadb
+#######################################
+function check_service_status(){
+  service_is_active=$(sudo systemctl is-active $1)
+
+  if [ $service_is_active = "active" ]
+  then
+    echo "$1 is active and running"
+  else
+    echo "$1 is not active/running"
+    exit 1
+  fi
+}
+
+#######################################
+# Check the status of a firewalld rule. If not configured exit.
+# Arguments:
+#   Port Number. eg: 3306, 80
+#######################################
+function is_firewalld_rule_configured(){
+
+  firewalld_ports=$(sudo firewall-cmd --list-all --zone=public | grep ports)
+
+  if [[ $firewalld_ports == *$1* ]]
+  then
+    echo "FirewallD has port $1 configured"
+  else
+    echo "FirewallD port $1 is not configured"
+    exit 1
+  fi
+}
+
+#######################################
+# Check if a given item is present in an output
+# Arguments:
+#   1 - Output
+#   2 - Item
+#######################################
+function check_item(){
+  if [[ $1 = *$2* ]]
+  then
+    print_color "green" "Item $2 is present on the web page"
+  else
+    print_color "red" "Item $2 is not present on the web page"
+  fi
+}
+
+
+
+
+
+
+echo "---------------- Setup Database Server ------------------"
+
+# Install and configure firewalld
+print_color "green" "Installing FirewallD.. "
+sudo yum install -y firewalld
+
+print_color "green" "Installing FirewallD.. "
+sudo service firewalld start
+sudo systemctl enable firewalld
+
+# Check FirewallD Service is running
+check_service_status firewalld
+
+# Install and configure Maria-DB
+print_color "green" "Installing MariaDB Server.."
+sudo yum install -y mariadb-server
+
+print_color "green" "Starting MariaDB Server.."
+sudo service mariadb start
+sudo systemctl enable mariadb
+
+# Check FirewallD Service is running
+check_service_status mariadb
+
+# Configure Firewall rules for Database
+print_color "green" "Configuring FirewallD rules for database.."
+sudo firewall-cmd --permanent --zone=public --add-port=3306/tcp
+sudo firewall-cmd --reload
+
+is_firewalld_rule_configured 3306
+
+
+# Configuring Database
+print_color "green" "Setting up database.."
+cat > setup-db.sql <<-EOF
+  CREATE DATABASE ecomdb;
+  CREATE USER 'ecomuser'@'localhost' IDENTIFIED BY 'ecompassword';
+  GRANT ALL PRIVILEGES ON *.* TO 'ecomuser'@'localhost';
+  FLUSH PRIVILEGES;
+EOF
+
+sudo mysql < setup-db.sql
+
+# Loading inventory into Database
+print_color "green" "Loading inventory data into database"
+cat > db-load-script.sql <<-EOF
+USE ecomdb;
+CREATE TABLE products (id mediumint(8) unsigned NOT NULL auto_increment,Name varchar(255) default NULL,Price varchar(255) default NULL, ImageUrl varchar(255) default NULL,PRIMARY KEY (id)) AUTO_INCREMENT=1;
+
+INSERT INTO products (Name,Price,ImageUrl) VALUES ("Laptop","100","c-1.png"),("Drone","200","c-2.png"),("VR","300","c-3.png"),("Tablet","50","c-5.png"),("Watch","90","c-6.png"),("Phone Covers","20","c-7.png"),("Phone","80","c-8.png"),("Laptop","150","c-4.png");
+
+EOF
+
+sudo mysql < db-load-script.sql
+
+mysql_db_results=$(sudo mysql -e "use ecomdb; select * from products;")
+
+if [[ $mysql_db_results == *Laptop* ]]
+then
+  print_color "green" "Inventory data loaded into MySQl"
+else
+  print_color "green" "Inventory data not loaded into MySQl"
+  exit 1
+fi
+
+
+print_color "green" "---------------- Setup Database Server - Finished ------------------"
+
+print_color "green" "---------------- Setup Web Server ------------------"
+
+# Install web server packages
+print_color "green" "Installing Web Server Packages .."
+sudo yum install -y httpd php php-mysql
+
+# Configure firewalld rules
+print_color "green" "Configuring FirewallD rules.."
+sudo firewall-cmd --permanent --zone=public --add-port=80/tcp
+sudo firewall-cmd --reload
+
+is_firewalld_rule_configured 80
+
+# Update index.php
+sudo sed -i 's/index.html/index.php/g' /etc/httpd/conf/httpd.conf
+
+# Start httpd service
+print_color "green" "Start httpd service.."
+sudo service httpd start
+sudo systemctl enable httpd
+
+# Check FirewallD Service is running
+check_service_status httpd
+
+# Download code
+print_color "green" "Install GIT.."
+sudo yum install -y git
+sudo git clone https://github.com/kodekloudhub/learning-app-ecommerce.git /var/www/html/
+
+print_color "green" "Updating index.php.."
+sudo sed -i 's/172.20.1.101/localhost/g' /var/www/html/index.php
+
+print_color "green" "---------------- Setup Web Server - Finished ------------------"
+
+# Test Script
+web_page=$(curl http://localhost)
+
+for item in Laptop Drone VR Watch Phone
+do
+  check_item "$web_page" $item
+done

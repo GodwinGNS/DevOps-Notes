@@ -1,0 +1,9 @@
+virtual box setup
+
+download virtualbox download
+
+download Oracle VM VirtualBox Extension Pack
+
+download 	https://aka.ms/vs/17/release/vc_redist.x64.exe
+
+download ubuntu

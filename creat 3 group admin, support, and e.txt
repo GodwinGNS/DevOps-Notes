@@ -1,0 +1,38 @@
+creat 3 group admin, support, and engineering.
+
+solution 
+run:
+sudo groupadd admin
+sudo groupadd support
+sudo grouadd engineering
+
+add the admin to sudo user
+
+solution
+run:
+sudo -aG sudo admin
+
+---to find out if the user has been add to sudo user---
+run:
+groups group_name
+
+creat a user in each of the group
+
+solution
+run:
+useradd -G admin user_name
+useradd -G support user_name
+useradd -G engineering user_name
+
+----to know if a user is in a group use----
+run:
+getent group group_name
+
+generate SSH keys for the user in admin group
+
+solution
+run:
+ssh username@host
+NOTE: username is your username you have created and the host is ip address
+ 
+ 
